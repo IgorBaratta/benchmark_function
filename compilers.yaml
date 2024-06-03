@@ -2,8 +2,8 @@ gcc-10:
   version:
     - 10
   cpp:
-    - g++-10
+    - g++-13
   cc:
-    - gcc-10
+    - gcc-13
   flags:
     - -Ofast -march=native -mprefer-vector-width=256

@@ -73,7 +73,7 @@ if __name__ == "__main__":
                 text = f"\n{machine}, {problem}, {c_name}, {compiler_version}, {flag}, {degree}, {form_compiler}, {scalar_type}, {batch_size}, {cell_type}, "
                 results = utils.run(problem, degree, nrepeats, flag, action,
                                     scalar_type, global_size, batch_size,
-                                    mpi_size, cell_type)
+                                    mpi_size, cell_type, form_compiler)
                 for result in results:
                     row = text + f"{rank}, {result}"
                     with open(out_file, "a") as file:

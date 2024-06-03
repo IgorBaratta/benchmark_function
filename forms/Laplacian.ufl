@@ -1,13 +1,34 @@
-from ufl import *
+backend = "$backend"
+if backend == "ffcx":
+    from ufl import *
+    import basix.ufl
+elif backend == "ffc":
+    from ufl_legacy import *
+elif backend == "tsfc":
+    from ufl import *
+    from finat.ufl import FiniteElement
+else:
+    raise ValueError("Invalid backend: {}".format(backend))
 
-element = FiniteElement("Lagrange", $cell, $degree)
-mesh = Mesh(VectorElement("Lagrange", $cell, 1))
+
+if backend == "ffc" or backend == "tsfc":
+    c_el = VectorElement("Lagrange", "$cell", 1)
+    element = FiniteElement("Lagrange", "$cell", $degree)
+    s_el = element.sub(0)
+else:
+    gdim = basix.cell.geometry(basix.cell.string_to_type("$cell")).shape[1]
+    c_el = basix.ufl.element("Lagrange", "$cell", 1, shape=(gdim, ))
+    element = basix.ufl.element("Lagrange", "$cell", $degree, shape=(gdim, ))
+    s_el = basix.ufl.element("Lagrange", "$cell", 1)
+
+
+mesh = Mesh(c_el)
 
 V = FunctionSpace(mesh, element)
 u = TrialFunction(V)
 v = TestFunction(V)
 
-W = FunctionSpace(mesh, FiniteElement("Lagrange", $cell, 1))
+W = FunctionSpace(mesh, s_el)
 k = Coefficient(W)
 
 a = k*inner(grad(u), grad(v))*dx
