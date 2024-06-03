@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=61.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "local_operator"
+version = "0.1.0"
+dependencies = ["pyyaml"]
+
+[project.optional-dependencies]
+ffcx = [
+    "fenics-ufl@git+https://github.com/FEniCS/ufl.git@main",
+    "fenics-basix@git+https://github.com/FEniCS/basix.git@main",
+    "fenics-ffcx@git+https://github.com/FEniCS/ffcx.git@main",
+]
+tsfc = [
+    "fenics-ufl@git+https://github.com/firedrakeproject/ufl.git",
+    "fenics-fiat@git+https://github.com/firedrakeproject/fiat.git",
+    "finat@git+https://github.com/FInAT/FInAT.git",
+    "loopy@git+https://github.com/firedrakeproject/loopy.git",
+    "tsfc@git+https://github.com/firedrakeproject/tsfc.git",
+]
+ffc = [
+    "fenics-ufl-legacy@git+https://github.com/FEniCS/ufl-legacy.git",
+    "fenics-dijitso@git+https://bitbucket.org/fenics-project/dijitso.git",
+    "fenics-fiat@git+https://bitbucket.org/fenics-project/fiat.git",
+    "fenics-ffc@git+https://bitbucket.org/fenics-project/ffc.git",
+]
+
+[tool.setuptools]
+packages = []
+
+
+[tool.mypy]
+ignore_missing_imports = true
+
+
+[tool.ruff]
+line-length = 100
+indent-width = 4
+
+[tool.ruff.lint]
+select = [
+    # Pyflakes
+    "F",
+    # Pycodestyle
+    "E",
+    "W",
+    # isort
+    "I001",
+]
+
+
+[tool.ruff.lint.isort]
+known-third-party = ["basix", "ffcx", "ufl", "ufl_legacy", "tsfc"]
+section-order = [
+    "future",
+    "standard-library",
+    "mpi",
+    "third-party",
+    "first-party",
+    "local-folder",
+]
+
+[tool.ruff.lint.isort.sections]
+"mpi" = ["mpi4py", "petsc4py"]

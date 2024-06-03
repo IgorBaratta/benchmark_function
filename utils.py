@@ -56,7 +56,7 @@ def create_ouput(problem):
 
 def run(problem: str, degree: int, nrepeats: int, flag: str, action: bool,
         scalar_type: str, global_size: int, batch_size: int, mpi_size: int,
-        cell_type: str):
+        cell_type: str, form_compiler: str):
 
     try:
         import ffcx
@@ -67,7 +67,7 @@ def run(problem: str, degree: int, nrepeats: int, flag: str, action: bool,
     with open("forms/" + problem + ".ufl", 'r') as f:
         src = Template(f.read())
         d = {'degree': str(degree), 'vdegree': str(
-            degree + 1), "cell": cell_type}
+            degree + 1), "cell": cell_type, "backend": form_compiler}
         result = src.substitute(d)
 
         with open("ffcx/problem.py", "w") as f2:
